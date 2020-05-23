@@ -1,0 +1,19 @@
+QUESTIONS: 
+
+
+
+NOTES:
+
+--remove pregnancies --> confounding factor
+
+--exclude medcond_yn --> confounding factor, overlaps with other conditions, thus creating large dip @ 1 comorbidity mark, basically saying people have either 0 or 2,3,4,etc. comorbidities.
+
+--Discharge dates largely incomplete and would erase all our data if we removed based on this factor
+
+--problems with mechvent_duration numbers, min/hours/days? mean 329, max 3M
+
+--missing data is often significant portion, currently ignored, meaning, e.g., missing death data is neither counted as dead or alive
+
+SITES:
+
+--#https://datacarpentry.org/R-genomics/04-dplyr.html#mutate

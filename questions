@@ -1,5 +1,8 @@
 QUESTIONS: 
 
+do blanks represent "No's"?
+
+Are states mutually exclusive from cities, e.g., NYC and NY?
 
 
 NOTES:
@@ -13,6 +16,13 @@ NOTES:
 --problems with mechvent_duration numbers, min/hours/days? mean 329, max 3M
 
 --missing data is often significant portion, currently ignored, meaning, e.g., missing death data is neither counted as dead or alive
+
+CORRECTIONS:
+
+--force HOSP as "Yes" if ICU is "Yes"
+
+--force HOSP and ICU as "Yes" if MECHVENT is "Yes"
+
 
 SITES:
 

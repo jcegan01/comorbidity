@@ -14,8 +14,6 @@ count(cmr, age_group)
 summary(cmr)
 
 
-
-
 ######### analysis ######### 
 
 #total population in each group

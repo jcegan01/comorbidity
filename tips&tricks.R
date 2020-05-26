@@ -18,3 +18,14 @@ for(n in 1:length(l_comor)){
   var2 <- sym(l_comor[n])
   cmr <- cmr %>% mutate(var1 = ifelse(var2 == "Yes",1,ifelse(var2 == "No",0,NA))) 
 }
+
+
+#! GET FUNCTION AND [[]]
+#print responses
+l_response <- paste0("response.0",1:5)
+for(n in 1:length(l_response)){
+  print(get(l_response[[n]]))
+}
+
+
+cmr[,l_co.comor[[1]]]

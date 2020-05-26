@@ -1,0 +1,10 @@
+"2020-05-26 1450 EDT"
+"Pregnant fraction removed is 0.40% of 1,200,599 entries"
+"Missing age group fraction removed is 0.23% of 1,195,760 entries"
+"Missing comorbidity fraction removed is 81.50% of 1,193,021 entries"
+"Missing admittance date fraction is 87.25% of 220,670 entries"
+"Missing discharge date fraction is 91.21% of 220,670 entries"
+"Comorbidity count:"
+"0" 87829
+"1" 76452
+"2+" 56389

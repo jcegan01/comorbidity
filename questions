@@ -1,3 +1,7 @@
+Igor, Melissa, Ben, Lyndsay (waiting on Katie Fullerton), Sue,
+
+--do not publish on those data
+
 QUESTIONS: 
 
 Sources: Where is this data coming from?
@@ -6,9 +10,9 @@ How often is this data updated?
 
 Is there PII we should be concerned about?
 
-Do blanks represent "No's"?
+Do blanks represent "No's"? --blanks represent unknowns
 
-Are states mutually exclusive from cities, e.g., NYC and NY?
+Are states mutually exclusive from cities, e.g., NYC and NY? --duplicates possible
 
 Are all entries/rows a different COVID+ person?
 

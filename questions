@@ -1,12 +1,19 @@
 QUESTIONS: 
 
-do blanks represent "No's"?
+Sources: Where is this data coming from?
+
+How often is this data updated?
+
+Is there PII we should be concerned about?
+
+Do blanks represent "No's"?
 
 Are states mutually exclusive from cities, e.g., NYC and NY?
 
-Are all entries a different COVID+ person?
+Are all entries/rows a different COVID+ person?
 
 Hospital discharge info is largely missing. Are hospitalized cases (entries) always discharged, either through recovery or death, or do some entries represent current patients?
+
 
 NOTES:
 

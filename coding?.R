@@ -7,6 +7,13 @@ for(n in 1:length(l_response)){
 
 cmr[,l_co.comor[[1]]]
 
+
+
+cmr <- cmr %>% mutate(extract(l_outcomes) = ifelse(extract(l_outcomes) == "Yes",1,ifelse(extract(l_outcomes) == "No",0,NA)))
+
+
+
+
 #####
 # how to convert to dplyr?
 #####

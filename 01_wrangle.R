@@ -33,12 +33,12 @@ cmr <- cmr %>% mutate(hosp_yn = ifelse(icu_yn == "Yes","Yes",hosp_yn))
 
 #filter for only non-pregnant patients
 a <- cmr %>%  filter(pregnant_yn == "Yes")
-print(paste("Pregnant fraction removed is",sprintf("%1.2f%%", 100*nrow(a)/nrow(cmr)),"of",formatC(nrow(cmr),big.mark = ","),"entries"))
+response.01 <- paste("Pregnant fraction removed is",sprintf("%1.2f%%", 100*nrow(a)/nrow(cmr)),"of",formatC(nrow(cmr),big.mark = ","),"entries")
 cmr <- cmr  %>% filter(pregnant_yn != "Yes")
 
 #filter out missing age groups
 a <- cmr %>%  filter(age_group == "")
-print(paste("Missing age group fraction removed is",sprintf("%1.2f%%", 100*nrow(a)/nrow(cmr)),"of",formatC(nrow(cmr),big.mark = ","),"entries"))
+response.02 <- paste("Missing age group fraction removed is",sprintf("%1.2f%%", 100*nrow(a)/nrow(cmr)),"of",formatC(nrow(cmr),big.mark = ","),"entries")
 cmr <- cmr  %>% filter(age_group != "")
 
 ######### comor count #########
@@ -68,7 +68,7 @@ cmr <- cmr %>%
 
 #filter out cases with no comorbidity information 
 a <- cmr %>%  filter_at(vars(starts_with("co.")), all_vars(is.na(.)))
-print(paste("Missing comorbidity fraction removed is",sprintf("%1.2f%%", 100*nrow(a)/nrow(cmr)),"of",formatC(nrow(cmr),big.mark = ","),"entries"))
+response.03 <- paste("Missing comorbidity fraction removed is",sprintf("%1.2f%%", 100*nrow(a)/nrow(cmr)),"of",formatC(nrow(cmr),big.mark = ","),"entries")
 cmr <- cmr  %>% filter_at(vars(starts_with("co.")), any_vars(!is.na(.)))
 
 #define numerical columns to sum
@@ -77,17 +77,34 @@ l_comor_num <- which(colnames(cmr) %in% l_co.comor)
 #sum columns, while ignoring NAs
 cmr <- cmr %>% 
   mutate(comor_count = rowSums(.[names(.)[l_comor_num]], na.rm = TRUE))
-count(cmr, comor_count) 
 
-#convert >2 to 2, for later labeling of "2+"
-cmr$comor_count[which(cmr$comor_count>2)] <- 2 
-count(cmr, comor_count) 
+#convert to "2+" category
+cmr <- cmr %>% mutate(comor_count = ifelse(comor_count > 2,2,comor_count))
 
-# comor_count     n
-# <dbl> <int>
-# 1           0 87829
-# 2           1 76452
-# 3           2 56389
+#change to character
+cmr$comor_count <- as.character(cmr$comor_count)
+cmr <- cmr %>% mutate(comor_count = ifelse(comor_count == "2","2+",comor_count))
+
+#fraction of admittance and discharge dates missing
+a <- cmr %>%  filter(adm1_dt == "")
+response.04 <- paste("Missing admittance date fraction is",sprintf("%1.2f%%", 100*nrow(a)/nrow(cmr)),"of",formatC(nrow(cmr),big.mark = ","),"entries")
+a <- cmr %>%  filter(dis1_dt == "")
+response.05 <- paste("Missing discharge date fraction is",sprintf("%1.2f%%", 100*nrow(a)/nrow(cmr)),"of",formatC(nrow(cmr),big.mark = ","),"entries")
+
+#comorbidity count
+response.06 <- count(cmr, comor_count) 
+
+#print responses in record keeping log
+l_response <- paste0("response.0",1:6)
+
+time <- as.POSIXct(Sys.time(), tz="Europe/London")
+time <- suppressWarnings(format(time,"%Y-%m-%d %H%M",tz="America/New_York",usetz=TRUE))
+write.table(time, file = paste0("outputs/records/Record_Keeping_",time,".txt"),append=TRUE,row.names = FALSE,col.names = FALSE)
+
+for(n in 1:length(l_response)){
+  record <- print(get(l_response[[n]]))
+  write.table(record, file = paste0("outputs/records/Record_Keeping_",time,".txt"),append=TRUE,row.names = FALSE,col.names = FALSE)
+}
 
 #save rda subset
 save(cmr,file = "rda/comorbidity_subset.rda")

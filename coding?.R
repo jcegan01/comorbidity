@@ -1,5 +1,11 @@
+#! GET FUNCTION AND [[]]
+#print responses
+l_response <- paste0("response.0",1:5)
+for(n in 1:length(l_response)){
+  print(get(l_response[[n]]))
+}
 
-
+cmr[,l_co.comor[[1]]]
 
 #####
 # how to convert to dplyr?

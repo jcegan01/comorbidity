@@ -55,6 +55,22 @@ tiff("figures/missing_outcomes_hosp-NO.tiff", units="in", width=8, height=5, res
   vis_miss(cmr_missing,warn_large_data=FALSE,)
 dev.off()
 
+#missing outcomes - icu YES
+cmr_missing <- cmr[,which(colnames(cmr)%in% l_outcomes)]
+cmr_missing <- cmr_missing %>% filter(icu_yn == 1) 
+cmr_missing <- cmr_missing[order(cmr_missing$death_yn, cmr_missing$hosp_yn, cmr_missing$mechvent_yn,cmr_missing$icu_yn),]
+tiff("figures/missing_outcomes_icu-YES.tiff", units="in", width=8, height=5, res=300)
+  vis_miss(cmr_missing,warn_large_data=FALSE,)
+dev.off()
+
+#missing outcomes - icu NO
+cmr_missing <- cmr[,which(colnames(cmr)%in% l_outcomes)]
+cmr_missing <- cmr_missing %>% filter(icu_yn == 0) 
+cmr_missing <- cmr_missing[order(cmr_missing$death_yn, cmr_missing$hosp_yn, cmr_missing$mechvent_yn,cmr_missing$icu_yn),]
+tiff("figures/missing_outcomes_icu-NO.tiff", units="in", width=8, height=5, res=300)
+  vis_miss(cmr_missing,warn_large_data=FALSE,)
+dev.off()
+
 
 #messing around
 cmr_h <- cmr %>% filter(hosp_yn == 1) 

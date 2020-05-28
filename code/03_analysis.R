@@ -5,15 +5,7 @@ setwd("/Users/Cegan/Documents/GitHub/comorbidity")
 source("code/00_global.R")
 
 #load RDA subset for analysis
-load("rda/comorbidity_subset.rda")
-
-
-######### plots ######### 
-
-counts <- table(cmr$age_group,cmr$comor_count)
-barplot(counts)
-count(cmr, age_group)
-summary(cmr)
+load(paste0("rda/comorbidity_subset_",download_date,".rda"))
 
 
 ######### analysis ######### 

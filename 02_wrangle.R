@@ -1,8 +1,5 @@
 
 
-######### setup ######### 
-setwd("/Users/Cegan/Documents/GitHub/comorbidity")
-
 #load global packages and variables
 setwd("/Users/Cegan/Documents/GitHub/comorbidity")
 source("00_global.R")
@@ -12,7 +9,7 @@ load(paste0("rda/comorbidity_dataset_",download_date,".rda"))
 
 #individual lists
 l_dem <- c("age_group","age_years","race","state","sex","age","pregnant_yn")
-l_outcomes <- c("death_yn","icu_yn","mechvent_yn","hosp_yn")
+l_outcomes <- c("death_yn","hosp_yn","icu_yn","mechvent_yn")
 l_hosptimes <- c("adm1_dt","dis1_dt","icu_adm1_dt","icu_dis1_dt","mechvent_dur")
 l_comor <- c("autoimm_yn","cld_yn","cvd_yn","diabetes_yn","hypertension_yn","immsupp_yn","liverdis_yn","neuro_yn","obesity_yn","othercond_yn", "otherdis_yn","renaldis_yn","smoke_curr_yn")
 

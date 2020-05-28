@@ -2,7 +2,7 @@
 
 #load global packages and variables
 setwd("/Users/Cegan/Documents/GitHub/comorbidity")
-source("00_global.R")
+source("code/00_global.R")
 
 #load raw data
 library(data.table)

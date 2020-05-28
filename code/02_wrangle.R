@@ -2,7 +2,7 @@
 
 #load global packages and variables
 setwd("/Users/Cegan/Documents/GitHub/comorbidity")
-source("00_global.R")
+source("code/00_global.R")
 
 #load comorbidity dataset from RDA file
 load(paste0("rda/comorbidity_dataset_",download_date,".rda"))

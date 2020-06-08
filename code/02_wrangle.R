@@ -11,7 +11,8 @@ load(paste0("rda/comorbidity_dataset_",download_date,".rda"))
 l_dem <- c("age_group","age_years","race","state","sex","age","pregnant_yn")
 l_outcomes <- c("death_yn","hosp_yn","icu_yn","mechvent_yn")
 l_hosptimes <- c("adm1_dt","dis1_dt","icu_adm1_dt","icu_dis1_dt","mechvent_dur")
-l_comor <- c("autoimm_yn","cld_yn","cvd_yn","diabetes_yn","hypertension_yn","immsupp_yn","liverdis_yn","neuro_yn","obesity_yn","othercond_yn", "otherdis_yn","renaldis_yn","smoke_curr_yn")
+#l_comor <- c("autoimm_yn","cld_yn","cvd_yn","diabetes_yn","hypertension_yn","immsupp_yn","liverdis_yn","neuro_yn","obesity_yn","othercond_yn", "otherdis_yn","renaldis_yn","smoke_curr_yn")
+l_comor <- c("autoimm_yn","cld_yn","cvd_yn","diabetes_yn","neuro_yn","smoke_curr_yn") #for WHO study
 
 #combined lists
 l_all <- c(l_dem,l_outcomes,l_hosptimes,l_comor)
@@ -38,7 +39,8 @@ response.01 <- paste("Pregnant fraction removed is",sprintf("%1.2f%%", 100*nrow(
 cmr <- cmr  %>% filter(pregnant_yn != "Yes")
 
 #replace age groups
-cmr <- cmr %>% mutate(age_group = ifelse(age <= 17,"0 - 17 Years",ifelse(age <= 29,"18 - 29 Years",age_group)))
+cmr <- cmr %>% mutate(age_group = ifelse(age <= 17,"0 - 17 Years",ifelse(age <= 49,"18 - 49 Years",ifelse(age <= 64,"50 - 64 Years",ifelse(age > 64,"65+ Years",age_group)))))
+
 
 #filter out missing age groups
 a <- cmr %>%  filter(age_group == "")
@@ -52,13 +54,13 @@ cmr <- cmr  %>% filter(age_group != "")
 for(n in 1:length(l_comor)){
   var1 <- sym(l_co.comor[n])
   var2 <- sym(l_comor[n])
-  cmr <- mutate(cmr,!!var1 := ifelse(!!var2 == "Yes",1,ifelse(!!var2 == "No",0,0))) #Unknowns to 0 for test
+  cmr <- mutate(cmr,!!var1 := ifelse(!!var2 == "Yes",1,ifelse(!!var2 == "No",0,0))) #Unknowns to 0 instead of NA
 }
 
 #changes yes/no to 1,0 while preserving unknowns - outcomes
 for(n in 1:length(l_outcomes)){
   var <- sym(l_outcomes[n])
-  cmr <- mutate(cmr,!!var := ifelse(!!var == "Yes",1,ifelse(!!var == "No",0,0))) #Unknowns to 0 for test 
+  cmr <- mutate(cmr,!!var := ifelse(!!var == "Yes",1,ifelse(!!var == "No",0,0))) #Unknowns to 0 instead of NA 
 }
 
 #filter out cases with no comorbidity information 
@@ -74,7 +76,8 @@ cmr <- cmr %>%
   mutate(comor_count = rowSums(.[names(.)[l_comor_num]], na.rm = TRUE))
 
 #convert to "2+" category
-cmr <- cmr %>% mutate(comor_count = ifelse(comor_count > 2,2,comor_count))
+#cmr <- cmr %>% mutate(comor_count = ifelse(comor_count > 2,2,comor_count))
+cmr <- cmr %>% mutate(comor_count = ifelse(comor_count > 2,2,"0-1")) #for WHO Study
 
 #change to character
 cmr$comor_count <- as.character(cmr$comor_count)

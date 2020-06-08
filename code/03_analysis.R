@@ -59,7 +59,7 @@ res_vent <- cmr %>%
 
 ######### output ######### 
 
-write.csv(res_overall, paste0("outputs/comorbidity_overall_",format(Sys.time(), "%Y-%m-%d"),".csv"),row.names = FALSE)
+write.csv(res_overall, paste0("outputs/comorbidity_WHO_",format(Sys.time(), "%Y-%m-%d"),".csv"),row.names = FALSE)
 #write.csv(res_hosp, paste0("outputs/comorbidity_hosp_",format(Sys.time(), "%Y-%m-%d"),".csv"),row.names = FALSE)
 #write.csv(res_icu, paste0("outputs/comorbidity_icu_",format(Sys.time(), "%Y-%m-%d"),".csv"),row.names = FALSE)
 #write.csv(res_vent, paste0("outputs/comorbidity_vent_",format(Sys.time(), "%Y-%m-%d"),".csv"),row.names = FALSE)

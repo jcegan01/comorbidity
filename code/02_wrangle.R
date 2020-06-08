@@ -37,45 +37,28 @@ a <- cmr %>%  filter(pregnant_yn == "Yes")
 response.01 <- paste("Pregnant fraction removed is",sprintf("%1.2f%%", 100*nrow(a)/nrow(cmr)),"of",formatC(nrow(cmr),big.mark = ","),"entries")
 cmr <- cmr  %>% filter(pregnant_yn != "Yes")
 
+#replace age groups
+cmr <- cmr %>% mutate(age_group = ifelse(age <= 17,"0 - 17 Years",ifelse(age <= 29,"18 - 29 Years",age_group)))
+
 #filter out missing age groups
 a <- cmr %>%  filter(age_group == "")
 response.02 <- paste("Missing age group fraction removed is",sprintf("%1.2f%%", 100*nrow(a)/nrow(cmr)),"of",formatC(nrow(cmr),big.mark = ","),"entries")
 cmr <- cmr  %>% filter(age_group != "")
 
+
 ######### comor count #########
 
 #changes yes/no to 1,0 while preserving unknowns - comorbidities
-# cmr <- cmr %>%
-#   mutate(co.autoimm_yn = ifelse(autoimm_yn == "Yes",1,ifelse(autoimm_yn == "No",0,NA))) %>%
-#   mutate(co.cld_yn = ifelse(cld_yn == "Yes",1,ifelse(cld_yn == "No",0,NA)))  %>%
-#   mutate(co.diabetes_yn = ifelse(diabetes_yn == "Yes",1,ifelse(diabetes_yn == "No",0,NA)))  %>%
-#   mutate(co.renaldis_yn = ifelse(renaldis_yn == "Yes",1,ifelse(renaldis_yn == "No",0,NA)))  %>%
-#   mutate(co.liverdis_yn = ifelse(liverdis_yn == "Yes",1,ifelse(liverdis_yn == "No",0,NA)))  %>%
-#   mutate(co.immsupp_yn = ifelse(immsupp_yn == "Yes",1,ifelse(immsupp_yn == "No",0,NA)))  %>%
-#   mutate(co.neuro_yn = ifelse(neuro_yn == "Yes",1,ifelse(neuro_yn == "No",0,NA)))  %>%
-#   mutate(co.hypertension_yn = ifelse(hypertension_yn == "Yes",1,ifelse(hypertension_yn == "No",0,NA)))  %>%
-#   mutate(co.obesity_yn = ifelse(obesity_yn == "Yes",1,ifelse(obesity_yn == "No",0,NA)))  %>%
-#   mutate(co.othercond_yn = ifelse(othercond_yn == "Yes",1,ifelse(othercond_yn == "No",0,NA)))  %>%
-#   mutate(co.cvd_yn = ifelse(cvd_yn == "Yes",1,ifelse(cvd_yn == "No",0,NA)))  %>%
-#   mutate(co.otherdis_yn = ifelse(otherdis_yn == "Yes",1,ifelse(otherdis_yn == "No",0,NA)))  %>%
-#   mutate(co.smoke_curr_yn = ifelse(smoke_curr_yn == "Yes",1,ifelse(smoke_curr_yn == "No",0,NA)))
-
 for(n in 1:length(l_comor)){
   var1 <- sym(l_co.comor[n])
   var2 <- sym(l_comor[n])
-  cmr <- mutate(cmr,!!var1 := ifelse(!!var2 == "Yes",1,ifelse(!!var2 == "No",0,NA))) 
+  cmr <- mutate(cmr,!!var1 := ifelse(!!var2 == "Yes",1,ifelse(!!var2 == "No",0,0))) #Unknowns to 0 for test
 }
 
 #changes yes/no to 1,0 while preserving unknowns - outcomes
-# cmr <- cmr %>%
-#   mutate(death_yn = ifelse(death_yn == "Yes",1,ifelse(death_yn == "No",0,NA)))  %>%
-#   mutate(icu_yn = ifelse(icu_yn == "Yes",1,ifelse(icu_yn == "No",0,NA)))  %>%
-#   mutate(mechvent_yn = ifelse(mechvent_yn == "Yes",1,ifelse(mechvent_yn == "No",0,NA)))  %>%
-#   mutate(hosp_yn = ifelse(hosp_yn == "Yes",1,ifelse(hosp_yn == "No",0,NA)))
-
 for(n in 1:length(l_outcomes)){
   var <- sym(l_outcomes[n])
-  cmr <- mutate(cmr,!!var := ifelse(!!var == "Yes",1,ifelse(!!var == "No",0,NA))) 
+  cmr <- mutate(cmr,!!var := ifelse(!!var == "Yes",1,ifelse(!!var == "No",0,0))) #Unknowns to 0 for test 
 }
 
 #filter out cases with no comorbidity information 
@@ -112,11 +95,11 @@ l_response <- paste0("response.0",1:7)
 
 time <- as.POSIXct(Sys.time(), tz="Europe/London")
 time <- suppressWarnings(format(time,"%Y-%m-%d %H%M",tz="America/New_York",usetz=TRUE))
-write.table(time, file = paste0("outputs/records/Record_Keeping_",time,".txt"),append=TRUE,row.names = FALSE,col.names = FALSE)
+write.table(time, file = paste0("outputs/records/",time,".txt"),append=TRUE,row.names = FALSE,col.names = FALSE)
 
 for(n in 1:length(l_response)){
   record <- print(get(l_response[[n]]))
-  write.table(record, file = paste0("outputs/records/Record_Keeping_",time,".txt"),append=TRUE,row.names = FALSE,col.names = FALSE)
+  write.table(record, file = paste0("outputs/records/",time,".txt"),append=TRUE,row.names = FALSE,col.names = FALSE)
 }
 
 #save rda subset
